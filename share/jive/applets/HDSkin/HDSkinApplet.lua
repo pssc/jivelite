@@ -219,29 +219,38 @@ end
 
 -- skin
 -- The meta arranges for this to be called to skin the interface.
+-- FIXME for full skin info....
 function skin_1080p(self, s)
+	self:skin(s,1920, 1080)
 	Framework:setVideoMode(1920, 1080, 0, false)
-	self:skin(s)
 end
 
 function skin_720p(self, s)
+	self:skin(s,1280,720)
 	Framework:setVideoMode(1280, 720, 0, false)
-	self:skin(s)
+	local screenWidth, screenHeight = Framework:getScreenSize()
+	if screenWidth ~= 1280 or screenHeight ~= 720 then
+		Framework:setVideoMode(screenWidth, screenHeight, 0, false)
+	end
 end
 
 function skin_1280_1024(self, s)
+	self:skin(s,1280,1024)
 	Framework:setVideoMode(1280, 1024, 0, false)
-	self:skin(s)
+end
+
+function skin_800_480(self, s)
+	self:skin(s,800,480)
+	Framework:setVideoMode(800, 480, 0, false)
 end
 
 -- this is the startup screen - not intended to be used beyond this
 function skin_vga(self, s)
+	self:skin(s,640,480)
 	Framework:setVideoMode(640, 480, 0, false)
-	self:skin(s)
 end
 
-function skin(self, s)
-	local screenWidth, screenHeight = Framework:getScreenSize()
+function skin(self, s, screenWidth, screenHeight)
 
 	--init lastInputType so selected item style is not shown on skin load
 	Framework.mostRecentInputType = "mouse"
@@ -647,8 +656,8 @@ function skin(self, s)
 	local ALBUMMENU_FONT_SIZE = 32
 	local ALBUMMENU_SMALL_FONT_SIZE = 24
 	local TEXTMENU_FONT_SIZE = 40
-	local POPUP_TEXT_SIZE_1 = 34
-	local POPUP_TEXT_SIZE_2 = 26
+	local POPUP_TEXT_SIZE_1 = 42
+	local POPUP_TEXT_SIZE_2 = 36
 	local TRACK_FONT_SIZE = 18
 	local TEXTAREA_FONT_SIZE = 18
 	local CENTERED_TEXTAREA_FONT_SIZE = 28
@@ -670,7 +679,7 @@ function skin(self, s)
 	local smallSpinny = {
 		img = _loadImage(self, "Alerts/wifi_connecting_med.png"),
 		frameRate = 8,
-		frameWidth = 26,
+		frameWidth = 32,
 		padding = 0,
 		h = WH_FILL,
 	}
