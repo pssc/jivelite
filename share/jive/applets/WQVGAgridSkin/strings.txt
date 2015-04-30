@@ -4,7 +4,7 @@
 
 WQVGA_GRID_SKIN
 # SLT: WQVGA refers to the "wide quarter VGA" resolution of the display
-	EN	WQVGA Grid View Skin
+	EN	WQVGA Grid View Skin (Unsupported)
 
 WQVGA_GRID_SKIN_FAB4
 	EN	Grid View Skin
