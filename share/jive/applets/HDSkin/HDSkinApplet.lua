@@ -62,6 +62,7 @@ local fontpath = "fonts/"
 local FONT_NAME = "FreeSans"
 local BOLD_PREFIX = "Bold"
 
+local coverSize = 900 -- default value, change by calling skin
 
 function init(self)
 	self.images = {}
@@ -72,7 +73,6 @@ function init(self)
 	self.tiles = {}
 end
 
-local coverSize = 900 -- default value, change by calling skin
 
 function param(self)
 	return {
@@ -220,40 +220,47 @@ end
 -- skin
 -- The meta arranges for this to be called to skin the interface.
 -- FIXME for full skin info....
-function skin_1080p(self, s)
-	self:skin(s,1920, 1080)
-	Framework:setVideoMode(1920, 1080, 0, false)
+function skin_1080p(self, s, reload, useDefaultSize)
+	self:skin_dxdy(s,reload,useDefaultSize,1920,1080)
 end
 
-function skin_720p(self, s)
-	self:skin(s,1280,720)
-	Framework:setVideoMode(1280, 720, 0, false)
-	local screenWidth, screenHeight = Framework:getScreenSize()
-	if screenWidth ~= 1280 or screenHeight ~= 720 then
-		Framework:setVideoMode(screenWidth, screenHeight, 0, false)
-	end
+function skin_720p(self, s, reload, useDefaultSize)
+	self:skin_dxdy(s,reload,useDefaultSize,1280,720)
 end
 
 function skin_1280_1024(self, s)
-	self:skin(s,1280,1024)
-	Framework:setVideoMode(1280, 1024, 0, false)
+	self:skin_dxdy(s,reload,useDefaultSize,1280,1024)
 end
 
 function skin_800_480(self, s)
-	self:skin(s,800,480)
-	Framework:setVideoMode(800, 480, 0, false)
+	self:skin_dxdy(s,reload,useDefaultSize,800,480)
 end
 
 -- this is the startup screen - not intended to be used beyond this
 function skin_vga(self, s)
-	self:skin(s,640,480)
-	Framework:setVideoMode(640, 480, 0, false)
+	self:skin_dxdy(s,reload,useDefaultSize,640,480)
 end
 
-function skin(self, s, screenWidth, screenHeight)
+function skin_dxdy(self, s, reload, useDefaultSize,dx,dy)
+	local screenWidth, screenHeight = dx, dy
+	if not useDefaultSize then
+                screenWidth, screenHeight = Framework:getScreenSize()
+        end
+	self:skin(s,screenWidth,screenHeight)
+	if useDefaultSize then
+		Framework:setVideoMode(screenWidth,screenHeight, 0, false)
+	end
+	screenWidth, screenHeight = Framework:getScreenSize()
+	if (screenWidth ~= dx or screenHeight ~= dy) and useDefaultSize then
+		log:warn("skin_dxdy but...",screenWidth,"x",screenHeight, " rather than ",dx,"x",dy)
+		self:skin(s,screenWidth,screenHeight)
+	end
+end
 
-	--init lastInputType so selected item style is not shown on skin load
-	Framework.mostRecentInputType = "mouse"
+function skin(self, s, screenWidth, screenHeight, reload)
+
+	--init lastInputType so selected item style is shown on skin load
+	Framework.mostRecentInputType = "ir"
 
 	-- skin
 	local thisSkin = 'remote'
