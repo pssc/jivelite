@@ -84,8 +84,8 @@ end
 
 function param(self)
         return {
-		THUMB_SIZE = 40,
-		THUMB_SIZE_MENU = 40,
+		THUMB_SIZE = 41,
+		THUMB_SIZE_MENU = 41,
 		NOWPLAYING_MENU = false,
 		-- NOWPLAYING_TRACKINFO_LINES used in assisting scroll behavior animation on NP
 		-- 3 is for a three line track, artist, and album (e.g., SBtouch)
